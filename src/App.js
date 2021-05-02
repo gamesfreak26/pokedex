@@ -1,38 +1,30 @@
 import './App.css'
-import axios from 'axios'
-import { useState, useEffect } from 'react';
+import PokemonList from './Components/PokemonList'
+import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
 
-const uri = "https://pokeapi.co/api/v2/generation/1"
-
-function App() {  
-  const [generation1, setGeneration1] = useState(null)
+function Content() {
+  let history = useHistory();
   
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
-  
-  const fetchData = async () => {
-    const response = await axios.get(uri)
-    setGeneration1(response.data)
-    console.log(response.data)
-  }
-
-  const Capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+  const handleClick = () => {
+    history.push('/pokemon');
   }
 
   return (
     <div className="container">
-      <h1>Pokemon</h1>
-      <p>Choose from the following pokemon:</p>
-      <h3>Generation 1</h3>
-      <div className="pokemon-list">
-        {generation1 && generation1.pokemon_species.map((pokemon, index) => {
-          return <div key={index}>{Capitalize(pokemon.name)}</div>
-        })}
-      </div>
+      <h1>Welcome to the Pokedex</h1>
+      <button onClick={handleClick}>See Pokemon</button>
+    </div>
+  )
+}
+
+function App() {  
+
+    return (
+    <div>
+      <Router>
+        <Route exact path="/" component={Content} />
+        <Route path="/pokemon" component={PokemonList}/>
+      </Router>      
     </div>
   );
 }
